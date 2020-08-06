@@ -57,7 +57,7 @@ public class PathDocumentation extends Documentation {
             new StationResponse(2L, "잠실나루역", LocalDateTime.now(), LocalDateTime.now())
         ), 10, 10, 100);
 
-        when(mapService.findPath(anyLong(), anyLong(), any())).thenReturn(pathResponse);
+        when(mapService.findPath(any(), anyLong(), anyLong(), any())).thenReturn(pathResponse);
 
         given().log().all().
             header("Authorization", "Bearer " + tokenResponse.getAccessToken()).

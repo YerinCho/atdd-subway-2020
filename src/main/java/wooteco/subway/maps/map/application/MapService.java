@@ -19,6 +19,7 @@ import wooteco.subway.maps.map.dto.PathResponseAssembler;
 import wooteco.subway.maps.station.application.StationService;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
+import wooteco.subway.members.member.domain.LoginMember;
 
 @Service
 @Transactional
@@ -41,17 +42,18 @@ public class MapService {
         Map<Long, Station> stations = findStations(lines);
 
         List<LineResponse> lineResponses = lines.stream()
-                .map(it -> LineResponse.of(it, extractLineStationResponses(it, stations)))
-                .collect(Collectors.toList());
+            .map(it -> LineResponse.of(it, extractLineStationResponses(it, stations)))
+            .collect(Collectors.toList());
 
         return new MapResponse(lineResponses);
     }
 
-    public PathResponse findPath(Long source, Long target, PathType type) {
+    public PathResponse findPath(LoginMember loginMember, Long source, Long target,
+        PathType type) {
         List<Line> lines = lineService.findLines();
         SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
         Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
-        int fare = fareService.calculateFare(subwayPath);
+        int fare = fareService.calculateFare(loginMember, subwayPath);
         System.out.println(fare);
         return PathResponseAssembler.assemble(subwayPath, stations, fare);
     }

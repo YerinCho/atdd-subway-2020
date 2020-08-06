@@ -15,7 +15,7 @@ public class TestObjectUtils {
     }
 
     public static Line createLine(Long id, String name, String color) {
-        Line line1 = new Line(name, color, LocalTime.of(05, 30), LocalTime.of(23, 30), 10);
+        Line line1 = new Line(name, color, LocalTime.of(05, 30), LocalTime.of(23, 30), 10, 0);
         ReflectionTestUtils.setField(line1, "id", id);
         return line1;
     }

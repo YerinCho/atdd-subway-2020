@@ -22,6 +22,7 @@ import wooteco.subway.maps.line.domain.LineStation;
 import wooteco.subway.maps.map.domain.PathType;
 import wooteco.subway.maps.map.domain.SubwayPath;
 import wooteco.subway.maps.station.domain.Station;
+import wooteco.subway.members.member.domain.LoginMember;
 
 @ExtendWith(MockitoExtension.class)
 class FareServiceTest {
@@ -92,7 +93,31 @@ class FareServiceTest {
         SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DURATION);
 
         //기본요금 + 200원 추가요금
-        assertThat(fareService.calculateFare(subwayPath)).isEqualTo(1450);
+        assertThat(fareService.calculateFare(null, subwayPath)).isEqualTo(1450);
+    }
+
+    @Test
+    @DisplayName("청소년 요금 계산")
+    void calculateYouth() {
+        LoginMember loginMember = new LoginMember(1L, "b@b", "PASSWORD", 15);
+        when(lineService.findLineById(1L)).thenReturn(line1);
+        when(lineService.findLineById(2L)).thenReturn(line2);
+
+        SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DURATION);
+
+        assertThat(fareService.calculateFare(loginMember, subwayPath)).isEqualTo((int)((1450 - 350) * 0.8));
+    }
+
+    @Test
+    @DisplayName("어린이 요금 계산")
+    void calculateChild() {
+        LoginMember loginMember = new LoginMember(1L, "c@c", "PASSWORD", 10);
+        when(lineService.findLineById(1L)).thenReturn(line1);
+        when(lineService.findLineById(2L)).thenReturn(line2);
+
+        SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DURATION);
+
+        assertThat(fareService.calculateFare(loginMember, subwayPath)).isEqualTo((int)((1450 - 350) * 0.5));
     }
 
 }
