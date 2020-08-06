@@ -110,7 +110,7 @@ public class MapServiceTest {
         when(lineService.findLines()).thenReturn(lines);
         when(pathService.findPath(anyList(), anyLong(), anyLong(), any())).thenReturn(subwayPath);
         when(stationService.findStationsByIds(anyList())).thenReturn(stations);
-        when(fareService.calculateFare(anyInt())).thenReturn(fare);
+        when(fareService.calculateFare(subwayPath)).thenReturn(fare);
 
         PathResponse pathResponse = mapService.findPath(1L, 3L, PathType.DISTANCE);
 
