@@ -67,20 +67,20 @@ class FareServiceTest {
     @DisplayName("10km 미만 기본요금")
     void calculateFareUnder10() {
         SubwayPath subwayPath = pathService.findPath(lines, 1L, 2L, PathType.DISTANCE);
-        assertThat(fareService.calculateFare(subwayPath)).isEqualTo(1250);
+        assertThat(fareService.calculateFareByDistance(subwayPath.calculateDistance())).isEqualTo(1250);
     }
 
     @Test
     @DisplayName("10~50 요금 계산")
     void calculateFare10To50() {
         SubwayPath subwayPath = pathService.findPath(lines, 3L, 4L, PathType.DURATION);
-        assertThat(fareService.calculateFare(subwayPath)).isEqualTo(1650);
+        assertThat(fareService.calculateFareByDistance(subwayPath.calculateDistance())).isEqualTo(1650);
     }
 
     @Test
     void calculateFareOver50() {
         SubwayPath subwayPath = pathService.findPath(lines, 4L, 5L, PathType.DURATION);
-        assertThat(fareService.calculateFare(subwayPath)).isEqualTo(2250);
+        assertThat(fareService.calculateFareByDistance(subwayPath.calculateDistance())).isEqualTo(2250);
     }
 
     @Test

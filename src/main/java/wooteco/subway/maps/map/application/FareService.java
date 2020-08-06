@@ -30,7 +30,7 @@ public class FareService {
         return defaultFare + lineExtraFare;
     }
 
-    private int calculateFareByDistance(int distance) {
+    int calculateFareByDistance(int distance) {
         if (distance > DISTANCE_CRITERIA) {
             return (int)((Math.ceil((distance - DISTANCE_CRITERIA - 1) / 8) + 1) * EXTRA_FARE) + DEFAULT_EXTRA_FARE;
         }
