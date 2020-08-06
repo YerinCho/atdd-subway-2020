@@ -1,13 +1,14 @@
 package wooteco.subway.maps.map.dto;
 
-import wooteco.subway.maps.station.dto.StationResponse;
-
 import java.util.List;
+
+import wooteco.subway.maps.station.dto.StationResponse;
 
 public class PathResponse {
     private List<StationResponse> stations;
     private int duration;
     private int distance;
+    private int fare;
 
     public PathResponse() {
     }
@@ -16,6 +17,13 @@ public class PathResponse {
         this.stations = stations;
         this.duration = duration;
         this.distance = distance;
+    }
+
+    public PathResponse(List<StationResponse> stations, int duration, int distance, int fare) {
+        this.stations = stations;
+        this.duration = duration;
+        this.distance = distance;
+        this.fare = fare;
     }
 
     public List<StationResponse> getStations() {
@@ -28,5 +36,9 @@ public class PathResponse {
 
     public int getDistance() {
         return distance;
+    }
+
+    public int getFare() {
+        return fare;
     }
 }

@@ -62,15 +62,12 @@ class FareServiceTest {
     @DisplayName("10~50 요금 계산")
     void calculateFare10To50() {
         SubwayPath subwayPath = pathService.findPath(lines, 3L, 4L, PathType.DURATION);
-        assertThat(subwayPath.calculateDistance()).isEqualTo(28);
-        //1250 + 100 * 3
         assertThat(fareService.calculateFare(subwayPath.calculateDistance())).isEqualTo(1650);
     }
 
     @Test
     void calculateFareOver50() {
         SubwayPath subwayPath = pathService.findPath(lines, 4L, 5L, PathType.DURATION);
-        //
         assertThat(fareService.calculateFare(subwayPath.calculateDistance())).isEqualTo(2250);
     }
 

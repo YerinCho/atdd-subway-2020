@@ -71,5 +71,4 @@ public class PathServiceTest {
         assertThat(subwayPath.extractStationId().get(1)).isEqualTo(2L);
         assertThat(subwayPath.extractStationId().get(2)).isEqualTo(3L);
     }
-
 }
