@@ -218,14 +218,14 @@
     methods: {
       ...mapMutations([SHOW_SNACKBAR]),
       ...mapActions([SEARCH_PATH, FETCH_STATIONS]),
-      async onSearchResult({commit}, item) {
+      async onSearchResult() {
         try {
           const item = {
             source: this.path.source,
             target: this.path.target,
             type: this.path.type,
           }
-          this.searchPath(item);
+          await this.searchPath(item);
         } catch (e) {
           this.showSnackbar(SNACKBAR_MESSAGES.COMMON.FAIL)
           console.error(e)
