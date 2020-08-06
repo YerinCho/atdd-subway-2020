@@ -225,6 +225,10 @@
             target: this.path.target,
             type: this.path.type,
           }
+          console.log(item.source);
+          if (item.source.replace(" ", "") === "" || item.target.replace(" ", "") === "") {
+            throw error;
+          }
           await this.searchPath(item);
         } catch (e) {
           this.showSnackbar(SNACKBAR_MESSAGES.COMMON.FAIL)
