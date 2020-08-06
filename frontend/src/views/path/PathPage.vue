@@ -191,38 +191,44 @@
 </template>
 
 <script>
-import validator from '@/utils/validator'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { SHOW_SNACKBAR } from '@/store/shared/mutationTypes'
-import { PATH_TYPE, SNACKBAR_MESSAGES } from '@/utils/constants'
-import { FETCH_STATIONS, SEARCH_PATH } from '@/store/shared/actionTypes'
-import AddFavoriteButton from '@/views/path/components/AddFavoriteButton'
-import dialog from '@/mixins/dialog'
-import Dialog from '@/components/dialogs/Dialog'
+  import validator from '@/utils/validator'
+  import {mapActions, mapGetters, mapMutations} from 'vuex'
+  import {SHOW_SNACKBAR} from '@/store/shared/mutationTypes'
+  import {PATH_TYPE, SNACKBAR_MESSAGES} from '@/utils/constants'
+  import {FETCH_STATIONS, SEARCH_PATH} from '@/store/shared/actionTypes'
+  import AddFavoriteButton from '@/views/path/components/AddFavoriteButton'
+  import dialog from '@/mixins/dialog'
+  import Dialog from '@/components/dialogs/Dialog'
 
-export default {
-  name: 'PathPage',
-  components: { Dialog, AddFavoriteButton },
-  mixins: [dialog],
-  computed: {
-    ...mapGetters(['stations', 'pathResult']),
-    getCurrentTime() {
-      const { hour, minute } = this.departureTimeView
-      return `${hour > 12 ? '오후' : '오전'} ${hour < 10 ? `0${hour}` : hour}:${minute < 10 ? `0${minute}` : minute}`
-    }
-  },
-  async created() {
-    await this.initAllStationsView()
-    this.initDepartureTimeView()
-  },
-  methods: {
-    ...mapMutations([SHOW_SNACKBAR]),
-    ...mapActions([SEARCH_PATH, FETCH_STATIONS]),
-    async onSearchResult() {
-      try {
-      } catch (e) {
-        this.showSnackbar(SNACKBAR_MESSAGES.COMMON.FAIL)
-        console.error(e)
+  export default {
+    name: 'PathPage',
+    components: {Dialog, AddFavoriteButton},
+    mixins: [dialog],
+    computed: {
+      ...mapGetters(['stations', 'pathResult']),
+      getCurrentTime() {
+        const {hour, minute} = this.departureTimeView
+        return `${hour > 12 ? '오후' : '오전'} ${hour < 10 ? `0${hour}` : hour}:${minute < 10 ? `0${minute}` : minute}`
+      }
+    },
+    async created() {
+      await this.initAllStationsView()
+      this.initDepartureTimeView()
+    },
+    methods: {
+      ...mapMutations([SHOW_SNACKBAR]),
+      ...mapActions([SEARCH_PATH, FETCH_STATIONS]),
+      async onSearchResult({commit}, item) {
+        try {
+          const item = {
+            source: this.path.source,
+            target: this.path.target,
+            type: this.path.type,
+          }
+          this.searchPath(item);
+        } catch (e) {
+          this.showSnackbar(SNACKBAR_MESSAGES.COMMON.FAIL)
+          console.error(e)
       }
     },
     initDepartureTimeView() {
