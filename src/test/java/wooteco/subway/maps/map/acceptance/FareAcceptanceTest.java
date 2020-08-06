@@ -78,7 +78,7 @@ public class FareAcceptanceTest extends AcceptanceTest {
     @DisplayName("비로그인 사용자가 경로를 조회했을 때 요금 표시")
     void calculateFareWhenNonMember() {
         //when
-        ExtractableResponse<Response> response = 거리_경로_조회_요청("DISTANCE", 1L, 3L);
+        ExtractableResponse<Response> response = 사용자에_따른_거리_경로_조회_요청(new TokenResponse(""), "DISTANCE", 1L, 3L);
         //then
         총_거리와_소요_시간_요금을_함께_응답함(response, 3, 4, 1250);
     }
