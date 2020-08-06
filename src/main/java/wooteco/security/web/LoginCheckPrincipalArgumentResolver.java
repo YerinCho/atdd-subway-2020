@@ -14,25 +14,6 @@ import wooteco.security.core.LoginCheckPrincipal;
 import wooteco.security.core.context.SecurityContextHolder;
 
 public class LoginCheckPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
-
-    public static Object toObject(Class clazz, String value) {
-        if (Boolean.class == clazz)
-            return Boolean.parseBoolean(value);
-        if (Byte.class == clazz)
-            return Byte.parseByte(value);
-        if (Short.class == clazz)
-            return Short.parseShort(value);
-        if (Integer.class == clazz)
-            return Integer.parseInt(value);
-        if (Long.class == clazz)
-            return Long.parseLong(value);
-        if (Float.class == clazz)
-            return Float.parseFloat(value);
-        if (Double.class == clazz)
-            return Double.parseDouble(value);
-        return value;
-    }
-
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(LoginCheckPrincipal.class);
@@ -52,6 +33,24 @@ public class LoginCheckPrincipalArgumentResolver implements HandlerMethodArgumen
         return authentication.getPrincipal();
     }
 
+    public static Object toObject(Class clazz, String value) {
+        if (Boolean.class == clazz)
+            return Boolean.parseBoolean(value);
+        if (Byte.class == clazz)
+            return Byte.parseByte(value);
+        if (Short.class == clazz)
+            return Short.parseShort(value);
+        if (Integer.class == clazz)
+            return Integer.parseInt(value);
+        if (Long.class == clazz)
+            return Long.parseLong(value);
+        if (Float.class == clazz)
+            return Float.parseFloat(value);
+        if (Double.class == clazz)
+            return Double.parseDouble(value);
+        return value;
+    }
+
     private Object extractPrincipal(MethodParameter parameter, Authentication authentication) {
         try {
             Map<String, String> principal = (Map)authentication.getPrincipal();
@@ -62,7 +61,7 @@ public class LoginCheckPrincipalArgumentResolver implements HandlerMethodArgumen
 
             return parameter.getParameterType().getConstructors()[0].newInstance(params);
         } catch (Exception e) {
-            return null;
+            throw new AuthorizationException();
         }
     }
 }

@@ -27,7 +27,6 @@ public class MapController {
         @RequestParam Long target,
         @RequestParam PathType type
     ) {
-        System.out.println(loginMember);
         return ResponseEntity.ok(mapService.findPath(loginMember, source, target, type));
     }
 
