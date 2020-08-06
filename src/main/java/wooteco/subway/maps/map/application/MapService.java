@@ -48,19 +48,22 @@ public class MapService {
         return new MapResponse(lineResponses);
     }
 
-    public PathResponse findPath(LoginMember loginMember, Long source, Long target,
-        PathType type) {
+    public PathResponse findPath(
+        LoginMember loginMember,
+        Long source,
+        Long target,
+        PathType type
+    ) {
         List<Line> lines = lineService.findLines();
         SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
         Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
         int fare = fareService.calculateFare(loginMember, subwayPath);
-        System.out.println(fare);
         return PathResponseAssembler.assemble(subwayPath, stations, fare);
     }
 
     private Map<Long, Station> findStations(List<Line> lines) {
         List<Long> stationIds = lines.stream()
-                .flatMap(it -> it.getStationInOrder().stream())
+            .flatMap(it -> it.getStationInOrder().stream())
                 .map(it -> it.getStationId())
                 .collect(Collectors.toList());
 

@@ -17,6 +17,10 @@ public class FareService {
     private static final int DEFAULT_EXTRA_FARE = DEFAULT_FARE + EXTRA_FARE * 8;
     private static final int DEFAULT_DISTANCE_CRITERIA = 10;
     private static final int DISTANCE_CRITERIA = 50;
+    private static final int DEDUCTION_FARE = 350;
+    private static final int ADULT_CRITERIA = 19;
+    private static final int YOUTH_CRITERIA = 13;
+    private static final int CHILD_CRITERIA = 6;
 
     private final LineService lineService;
 
@@ -37,13 +41,14 @@ public class FareService {
     }
 
     private int calculateAgeFare(LoginMember loginMember, int totalFare) {
-        if (loginMember.getAge() >= 19) {
+        int age = loginMember.getAge();
+        if (age >= ADULT_CRITERIA || age < CHILD_CRITERIA) {
             return totalFare;
         }
-        if (loginMember.getAge() >= 13) {
-            return (int)((totalFare - 350) * 0.8);
+        if (age >= YOUTH_CRITERIA) {
+            return (int)((totalFare - DEDUCTION_FARE) * 0.8);
         }
-        return (int)((totalFare - 350) * 0.5);
+        return (int)((totalFare - DEDUCTION_FARE) * 0.5);
     }
 
     int calculateFareByDistance(int distance) {
@@ -60,6 +65,8 @@ public class FareService {
         List<Integer> extraFares = lineStationEdges.stream()
             .map(lineStationEdge -> lineService.findLineById(lineStationEdge.getLineId()).getExtraFare())
             .collect(Collectors.toList());
-        return extraFares.stream().max(Integer::compareTo).get();
+        return extraFares.stream()
+            .max(Integer::compareTo)
+            .orElseThrow(() -> new IllegalAccessError("노선별 요금을 계산할 수 없습니다."));
     }
 }
